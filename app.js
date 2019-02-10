@@ -1,0 +1,131 @@
+var express = require('express');
+var socket = require('socket.io');
+
+//App Setup
+const port = 3000;
+const app = express();
+const server = app.listen(port, function() {
+	console.log("App listening on Port " + port);
+});
+
+//Static files
+app.use(express.static("public"));
+
+//Socket setup
+var io = socket(server);
+
+//Counter for number of connections
+var socketCount = 0; 
+
+//Counter for number of actions detected.
+var actionCounter = 0;
+
+//Instantiate object to hold information about the user and actions sent by that user.
+var actionObj = {};
+
+io.on('connection', function (socket) {
+	console.log("Socket connected!", socket.id);
+	socketCount++;
+	console.log(socketCount);
+
+	socket.on('disconnect', function (){
+		socketCount--;
+		console.log(socketCount);
+		console.log('User Disconnected.');
+	})
+	
+	socket.on('action', function(data) {
+		if(Object.keys(actionObj).indexOf(socket.id) === -1){
+			actionObj[socket.id] = data;
+			io.sockets.emit("action", actionObj);
+			actionCounter++;
+			socket.broadcast.emit('actionSent');
+		}
+		if(actionCounter === 2) {
+			reportOutcome();
+			actionCounter = 0;
+			actionObj = {};
+		}
+	});
+
+	socket.on('reset', function () {
+		console.log('reset detected');
+		actionObj = {};
+		io.sockets.emit('reset');
+	});
+
+	function reportOutcome() {
+		let users = Object.keys(actionObj);
+		console.log(users);
+		//First action: Rock Condition
+		if(actionObj[users[0]] === 'Rock') {
+			if(actionObj[users[1]] === 'Rock') {
+				io.sockets.emit("draw");
+				io.sockets.emit("Rock");
+			} else if (actionObj[users[1]] === 'Scissors') {
+				io.sockets.to(users[1]).emit("lose");
+				io.sockets.to(users[1]).emit("Scissors");
+
+				io.sockets.to(users[0]).emit("win");
+				io.sockets.to(users[0]).emit("Rock");
+
+			} else if (actionObj[users[1]] === 'Paper') {
+				io.sockets.to(users[1]).emit("win");
+				io.sockets.to(users[1]).emit("Paper");
+
+				io.sockets.to(users[0]).emit('lose');
+				io.sockets.to(users[0]).emit("Rock");
+
+			}
+		}
+
+		//First action: Paper Condition
+		if(actionObj[users[0]] === 'Paper') {
+			if(actionObj[users[1]] === 'Paper') {
+				io.sockets.emit("draw");
+				io.sockets.emit("Paper");
+			} else if (actionObj[users[1]] === 'Scissors') {
+				io.sockets.to(users[1]).emit("win");
+				io.sockets.to(users[1]).emit("Scissors");
+
+				io.sockets.to(users[0]).emit("lose");
+				io.sockets.to(users[0]).emit("Paper");
+
+			} else if (actionObj[users[1]] === 'Rock') {
+				io.sockets.to(users[1]).emit("lose");
+				io.sockets.to(users[1]).emit("Rock");
+
+				io.sockets.to(users[0]).emit('win');
+				io.sockets.to(users[0]).emit("Paper");
+
+			}
+		}
+
+		//First action: Scissors Condition
+		if(actionObj[users[0]] === 'Scissors') {
+			if(actionObj[users[1]] === 'Scissors') {
+				io.sockets.emit("draw");
+				io.sockets.emit("Scissors");
+
+			} else if (actionObj[users[1]] === 'Rock') {
+				io.sockets.to(users[1]).emit("win");
+				io.sockets.to(users[1]).emit("Rock");
+
+				io.sockets.to(users[0]).emit("lose");
+				io.sockets.to(users[0]).emit("Scissors");
+
+			} else if (actionObj[users[1]] === 'Paper') {
+				io.sockets.to(users[1]).emit("lose");
+				io.sockets.to(users[1]).emit("Paper");
+
+				io.sockets.to(users[0]).emit('win');
+				io.sockets.to(users[0]).emit("Scissors");
+
+			}
+		}
+	}
+
+
+
+
+});
