@@ -1,5 +1,5 @@
-var express = require('express');
-var socket = require('socket.io');
+const express = require('express');
+const socket = require('socket.io');
 
 //App Setup
 const port = 3000;
@@ -12,16 +12,16 @@ const server = app.listen(port, function() {
 app.use(express.static("public"));
 
 //Socket setup
-var io = socket(server);
+const io = socket(server);
 
 //Counter for number of connections
-var socketCount = 0; 
+let socketCount = 0; 
 
 //Counter for number of actions detected.
-var actionCounter = 0;
+let actionCounter = 0;
 
 //Instantiate object to hold information about the user and actions sent by that user.
-var actionObj = {};
+let actionObj = {};
 
 io.on('connection', function (socket) {
 	console.log("Socket connected!", socket.id);
@@ -75,7 +75,6 @@ io.on('connection', function (socket) {
 
 				io.sockets.to(users[0]).emit('lose');
 				io.sockets.to(users[0]).emit("Rock");
-
 			}
 		}
 
@@ -100,7 +99,6 @@ io.on('connection', function (socket) {
 
 			}
 		}
-
 		//First action: Scissors Condition
 		if(actionObj[users[0]] === 'Scissors') {
 			if(actionObj[users[1]] === 'Scissors') {
@@ -120,12 +118,7 @@ io.on('connection', function (socket) {
 
 				io.sockets.to(users[0]).emit('win');
 				io.sockets.to(users[0]).emit("Scissors");
-
 			}
 		}
 	}
-
-
-
-
 });

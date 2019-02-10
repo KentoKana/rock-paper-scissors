@@ -1,4 +1,4 @@
-var socket = io.connect("http://localhost:3000");
+const socket = io.connect("http://localhost:3000");
 
 //DOM queries
 const output = document.getElementById('output');
