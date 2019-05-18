@@ -5,11 +5,27 @@ const output = document.getElementById('output');
 const sendActionBtn = document.getElementById('sendAction');
 const resetBtn = document.getElementById('resetGame');
 
+
 const rockBtn = document.getElementById('rock');
 const paperBtn = document.getElementById('paper');
-const scissorsBtn = document.getElementById('scissors')
+const scissorsBtn = document.getElementById('scissors');
 
 const radioBtns = document.getElementsByName('action');
+
+
+socket.on('tooManyPlayers', function() {
+    output.innerHTML = "I'm sorry, only 2 players can be in a game at once."
+});
+
+socket.on('waiting', function() {
+
+    output.innerHTML = "Waiting for another player..."
+});
+
+socket.on('enoughPlayers', function() {
+    output.innerHTML = "Begin Game! Choose your move!"
+});
+
 
 function allowSubmit() {
     for (i = 0; i < radioBtns.length; i++) {
@@ -54,7 +70,7 @@ sendActionBtn.addEventListener('click', function() {
 });
 
 socket.on('actionSent', function() {
-    output.innerHTML += "The opponent sent an action. Hurry up."
+    output.innerHTML = "The opponent sent an action. Hurry up."
 });
 
 socket.on('draw', function() {

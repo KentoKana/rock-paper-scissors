@@ -35,6 +35,20 @@ io.on('connection', function(socket) {
         console.log('User Disconnected.');
     })
 
+    //Limit Number of players allowed in a game.
+    if (socketCount > 2) {
+        socket.emit('tooManyPlayers', 'I\'m sorry, too many connections');
+        socket.disconnect();
+    }
+
+    if (socketCount < 2) {
+        socket.emit('waiting', 'Waiting for another player');
+    }
+
+    if (socketCount === 2) {
+        io.sockets.emit('enoughPlayers', 'Enough Players!');
+    }
+
     socket.on('action', function(data) {
         if (Object.keys(actionObj).indexOf(socket.id) === -1) {
             actionObj[socket.id] = data;
