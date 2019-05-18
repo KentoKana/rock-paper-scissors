@@ -14,8 +14,8 @@ app.use(express.static("public"));
 //Socket setup
 const io = require('socket.io')(server, { origins: '*:*' });
 io.set('origins', '*:*');
-io.origins('*:*')
-    //Counter for number of connections
+io.origins(['*:*']);
+//Counter for number of connections
 let socketCount = 0;
 
 //Counter for number of actions detected.
