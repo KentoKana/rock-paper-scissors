@@ -13,6 +13,7 @@ app.use(express.static("public"));
 
 //Socket setup
 const io = socket(server);
+io.origins('*:*');
 
 //Counter for number of connections
 let socketCount = 0;
