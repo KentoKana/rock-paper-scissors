@@ -13,7 +13,7 @@ app.use(express.static("public"));
 
 //Socket setup
 const io = require('socket.io')(server, { origins: '*:*' });
-
+io.set('origins', 'http://kentokanazawa.:80');
 //Counter for number of connections
 let socketCount = 0;
 
