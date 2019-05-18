@@ -12,8 +12,7 @@ const server = app.listen(port, function() {
 app.use(express.static("public"));
 
 //Socket setup
-const io = socket(server);
-io.origins('*:*');
+const io = require('socket.io')(server, { origins: '*:*' });
 
 //Counter for number of connections
 let socketCount = 0;
