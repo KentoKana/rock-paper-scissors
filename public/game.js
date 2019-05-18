@@ -1,4 +1,4 @@
-const socket = io.connect("http://localhost:3000");
+const socket = io.connect();
 
 //DOM queries
 const output = document.getElementById('output');
@@ -12,111 +12,109 @@ const scissorsBtn = document.getElementById('scissors')
 const radioBtns = document.getElementsByName('action');
 
 function allowSubmit() {
-	for (i=0;i<radioBtns.length;i++) {
-		radioBtns[i].onclick = function () {
-			sendActionBtn.removeAttribute('disabled');
-		}
-	}
+    for (i = 0; i < radioBtns.length; i++) {
+        radioBtns[i].onclick = function() {
+            sendActionBtn.removeAttribute('disabled');
+        }
+    }
 }
 
 function disableRadio() {
-	for (i=0;i<radioBtns.length;i++) {
-		radioBtns[i].disabled = true;
-	}
+    for (i = 0; i < radioBtns.length; i++) {
+        radioBtns[i].disabled = true;
+    }
 }
 
 function enableRadio() {
-	for (i=0;i<radioBtns.length;i++) {
-		radioBtns[i].disabled = false;
-	}
+    for (i = 0; i < radioBtns.length; i++) {
+        radioBtns[i].disabled = false;
+    }
 }
 
 function resetRadio() {
-	for (i=0;i<radioBtns.length;i++) {
-		radioBtns[i].checked = false;
-	}
+    for (i = 0; i < radioBtns.length; i++) {
+        radioBtns[i].checked = false;
+    }
 }
 
 const actionInput = document.forms[0].action;
 
-resetBtn.addEventListener('click', function () {
-	socket.emit('reset');
+resetBtn.addEventListener('click', function() {
+    socket.emit('reset');
 });
 
 allowSubmit();
 
-sendActionBtn.addEventListener('click', function () {
-	sendActionBtn.setAttribute('disabled', '');
-	sendActionBtn.innerHTML = "Waiting on your opponent...";
-	disableRadio();
+sendActionBtn.addEventListener('click', function() {
+    sendActionBtn.setAttribute('disabled', '');
+    sendActionBtn.innerHTML = "Waiting on your opponent...";
+    disableRadio();
 
-	socket.emit('action', actionInput.value);
+    socket.emit('action', actionInput.value);
 });
 
-socket.on('actionSent', function (){
-	output.innerHTML += "The opponent sent an action. Hurry up."
+socket.on('actionSent', function() {
+    output.innerHTML += "The opponent sent an action. Hurry up."
 });
 
-socket.on('draw', function () {
-	sendActionBtn.removeAttribute('disabled');
-	sendActionBtn.innerHTML = "Send Action";
-	resetBtn.removeAttribute('disabled');
-	sendActionBtn.setAttribute('disabled', '');
+socket.on('draw', function() {
+    sendActionBtn.removeAttribute('disabled');
+    sendActionBtn.innerHTML = "Send Action";
+    resetBtn.removeAttribute('disabled');
+    sendActionBtn.setAttribute('disabled', '');
 
-	output.innerHTML = "";
-	socket.on("Rock", function () {
-		output.innerHTML = "You both chose rock. It's a Draw. <br>";
-	});
-	socket.on("Scissors", function () {
-		output.innerHTML = "You both chose scissors. It's a Draw.<br>";
-	});
-	socket.on("Paper", function () {
-		output.innerHTML = "You both chose paper. It's a Draw.<br>";
-	});
+    output.innerHTML = "";
+    socket.on("Rock", function() {
+        output.innerHTML = "You both chose rock. It's a Draw. <br>";
+    });
+    socket.on("Scissors", function() {
+        output.innerHTML = "You both chose scissors. It's a Draw.<br>";
+    });
+    socket.on("Paper", function() {
+        output.innerHTML = "You both chose paper. It's a Draw.<br>";
+    });
 });
 
-socket.on('win', function () {		
-	sendActionBtn.removeAttribute('disabled');
-	sendActionBtn.innerHTML = "Send Action";
-	resetBtn.removeAttribute('disabled');
-	sendActionBtn.setAttribute('disabled', '');
+socket.on('win', function() {
+    sendActionBtn.removeAttribute('disabled');
+    sendActionBtn.innerHTML = "Send Action";
+    resetBtn.removeAttribute('disabled');
+    sendActionBtn.setAttribute('disabled', '');
 
-	output.innerHTML = "";
-	socket.on("Rock", function () {
-		output.innerHTML = "Your opponent chose scissors. You win!";
-	});
-	socket.on("Paper", function () {
-		output.innerHTML = "Your opponent chose rock. You win!";
-	});
-	socket.on("Scissors", function () {
-		output.innerHTML = "Your opponent chose paper. You win!";
-	});
+    output.innerHTML = "";
+    socket.on("Rock", function() {
+        output.innerHTML = "Your opponent chose scissors. You win!";
+    });
+    socket.on("Paper", function() {
+        output.innerHTML = "Your opponent chose rock. You win!";
+    });
+    socket.on("Scissors", function() {
+        output.innerHTML = "Your opponent chose paper. You win!";
+    });
 
 });
 
-socket.on('lose', function (){
-	sendActionBtn.removeAttribute('disabled');
-	sendActionBtn.innerHTML = "Send Action";
-	resetBtn.removeAttribute('disabled');
-	sendActionBtn.setAttribute('disabled', '');
+socket.on('lose', function() {
+    sendActionBtn.removeAttribute('disabled');
+    sendActionBtn.innerHTML = "Send Action";
+    resetBtn.removeAttribute('disabled');
+    sendActionBtn.setAttribute('disabled', '');
 
-	output.innerHTML = "";
-	socket.on("Rock", function() {
-		output.innerHTML = "Your opponent chose paper. You lose!";
-	});
-	socket.on("Paper", function() {
-		output.innerHTML = "Your opponent chose scissors. You lose!";
-	});
-	socket.on("Scissors", function() {
-		output.innerHTML = "Your opponent chose rock. You lose!";
-	});
+    output.innerHTML = "";
+    socket.on("Rock", function() {
+        output.innerHTML = "Your opponent chose paper. You lose!";
+    });
+    socket.on("Paper", function() {
+        output.innerHTML = "Your opponent chose scissors. You lose!";
+    });
+    socket.on("Scissors", function() {
+        output.innerHTML = "Your opponent chose rock. You lose!";
+    });
 });
 
-socket.on('reset', function () {
-	resetBtn.setAttribute('disabled', '');
-	output.innerHTML = "";
-	resetRadio();
-	enableRadio();
+socket.on('reset', function() {
+    resetBtn.setAttribute('disabled', '');
+    output.innerHTML = "";
+    resetRadio();
+    enableRadio();
 })
-
-
