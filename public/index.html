@@ -4,27 +4,45 @@
 <head>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.2.0/socket.io.js"></script>
     <meta charset="utf-8">
-
+    <link rel="stylesheet" type="text/css" href="style.css">
 </head>
 
 <body>
-    <h1>Rock Paper Scissors Game</h1>
-    <div id="gameContainer">
-        <div id="output">
+    <div class="body-wrap">
+        <h1>Rock Paper Scissors Game</h1>
+        <div id="gameContainer">
+            <div id="output">
 
+            </div>
+            <form action="" method="POST">
+                <div class="game-options">
+                    <div>
+                        <input id="rock" type="radio" name="action" value="Rock">
+                        <label for="rock"><img src="images/rock.svg" alt="rock"><span
+                                class="option-text">Rock</span></label>
+                    </div>
+                    <div>
+                        <input id="paper" type="radio" name="action" value="Paper">
+                        <label for="paper"><img src="images/paper.svg" alt="paper"><span
+                                class="option-text">Paper</span></label>
+                    </div>
+                    <div>
+                        <input id="scissors" type="radio" name="action" value="Scissors">
+                        <label for="scissors"><img src="images/scissors.svg" alt="scissors"><span
+                                class="option-text">Scissors</span></label>
+                    </div>
+                </div>
+                <div class="game-buttons">
+                    <div>
+                        <button type="button" id="sendAction" disabled> Send Action </button>
+                    </div>
+                    <div>
+                        <button type="button" id="resetGame" disabled>Reset</button>
+                    </div>
+                </div>
+            </form>
         </div>
-        <form action="" method="POST">
-            <label for="rock">Rock</label>
-            <input id="rock" type="radio" name="action" value="Rock"><br>
-            <label for="paper">Paper</label>
-            <input id="paper" type="radio" name="action" value="Paper"><br>
-            <label for="scissors">Scissors</label>
-            <input id="scissors" type="radio" name="action" value="Scissors"><br>
-            <button type="button" id="sendAction" disabled> Send Action </button>
-            <button type="button" id="resetGame" disabled>Reset</button>
-        </form>
     </div>
-
     <script src="/game.js"></script>
 </body>
 
