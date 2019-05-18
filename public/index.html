@@ -1,28 +1,31 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.2.0/socket.io.js"></script>
-	<meta charset="utf-8">
+    <script src="https://cors-anywhere.herokuapp.com/https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.2.0/socket.io.js"></script>
+    <meta charset="utf-8">
 
 </head>
+
 <body>
-	<h1>Rock Paper Scissors Game</h1>
-	<div id="gameContainer">
-		<div id="output">
+    <h1>Rock Paper Scissors Game</h1>
+    <div id="gameContainer">
+        <div id="output">
 
-		</div>
-		<form action="" method="POST">
-			<label for="rock">Rock</label>
-			<input id="rock" type="radio" name="action" value="Rock"><br>
-			<label for="paper">Paper</label>
-			<input id="paper" type="radio" name="action" value="Paper"><br>
-			<label for="scissors">Scissors</label>
-			<input id="scissors" type="radio" name="action" value="Scissors"><br>
-			<button type="button" id="sendAction" disabled> Send Action </button>
-			<button type="button" id="resetGame" disabled>Reset</button>
-		</form>
-	</div>
+        </div>
+        <form action="" method="POST">
+            <label for="rock">Rock</label>
+            <input id="rock" type="radio" name="action" value="Rock"><br>
+            <label for="paper">Paper</label>
+            <input id="paper" type="radio" name="action" value="Paper"><br>
+            <label for="scissors">Scissors</label>
+            <input id="scissors" type="radio" name="action" value="Scissors"><br>
+            <button type="button" id="sendAction" disabled> Send Action </button>
+            <button type="button" id="resetGame" disabled>Reset</button>
+        </form>
+    </div>
 
-	<script src="/game.js"></script>
+    <script src="/game.js"></script>
 </body>
+
 </html>
